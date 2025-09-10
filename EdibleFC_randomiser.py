@@ -40,7 +40,7 @@ else:
     if st.button("🔀 Shuffle Players"):
         random.shuffle(st.session_state["players"])
         st.success("🔀 Player list shuffled!")
-        st.experimental_rerun()
+        st.rerun()
 
     for i, (p, pos) in enumerate(st.session_state["players"]):
         cols = st.columns([3, 1, 1])
@@ -58,23 +58,23 @@ else:
                 if st.button("💾 Save", key=f"save_{i}"):
                     st.session_state["players"][i] = (new_name, new_position)
                     st.session_state["edit_index"] = None
-                    st.experimental_rerun()
+                    st.rerun()
             with cols[2]:
                 if st.button("❌ Cancel", key=f"cancel_{i}"):
                     st.session_state["edit_index"] = None
-                    st.experimental_rerun()
+                    st.rerun()
         else:
             with cols[0]:
                 st.write(f"{p} ({pos})")
             with cols[1]:
                 if st.button("✏️ Edit", key=f"edit_{i}"):
                     st.session_state["edit_index"] = i
-                    st.experimental_rerun()
+                    st.rerun()
             with cols[2]:
                 if st.button("🗑️ Remove", key=f"remove_{i}"):
                     removed = st.session_state["players"].pop(i)
                     st.success(f"🗑️ Removed {removed[0]} ({removed[1]})")
-                    st.experimental_rerun()
+                    st.rerun()
 
 # --- Team generator function ---
 def generate_teams(players, num_teams):
