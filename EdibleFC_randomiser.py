@@ -9,7 +9,7 @@ import os
 
 st.set_page_config(page_title="EdibleFC Randomiser", page_icon="⚽", layout="centered")
 
-st.title("🍽️⚽ EdibleFC Randomiser")
+st.title("⚽EdibleFC Randomiser⚽")
 st.write("Generate fair football teams with balanced positions (GK, DEF, MID, ST).")
 
 # --- Persistent storage ---
@@ -27,7 +27,7 @@ if os.path.exists("players.xlsx"):
     try:
         df_db = pd.read_excel("players.xlsx")
         if "Name" in df_db.columns and "Position" in df_db.columns:
-            st.sidebar.success("✅ Player database loaded from repo!")
+            st.sidebar.success("✅ Player database!")
 
             # Multi-select to pick players from database
             selected_names = st.sidebar.multiselect(
