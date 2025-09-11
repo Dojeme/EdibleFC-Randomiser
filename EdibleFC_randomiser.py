@@ -27,7 +27,7 @@ if os.path.exists("players.xlsx"):
     try:
         df_db = pd.read_excel("players.xlsx")
         if "Name" in df_db.columns and "Position" in df_db.columns:
-            st.sidebar.success("✅ Player database loaded from repo!")
+            st.sidebar.success("✅ Player database loaded!")
 
             # Multi-select to pick players from database
             selected_names = st.sidebar.multiselect(
