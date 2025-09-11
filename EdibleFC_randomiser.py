@@ -27,8 +27,6 @@ if os.path.exists("players.xlsx"):
     try:
         df_db = pd.read_excel("players.xlsx")
         if "Name" in df_db.columns and "Position" in df_db.columns:
-            st.sidebar.success("✅ Player database!")
-
             # Multi-select to pick players from database
             selected_names = st.sidebar.multiselect(
                 "Select Players",
@@ -44,8 +42,6 @@ if os.path.exists("players.xlsx"):
             st.sidebar.error("Excel must have 'Name' and 'Position' columns")
     except Exception as e:
         st.sidebar.error(f"Error reading Excel file: {e}")
-else:
-    st.sidebar.info("No players.xlsx found in repo. You can add a database file for selection.")
 
 # --- Sidebar form for manually adding players ---
 st.sidebar.header("➕ Add Players")
