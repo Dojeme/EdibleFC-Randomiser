@@ -8,7 +8,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 st.set_page_config(page_title="EdibleFC Randomiser", page_icon="⚽", layout="centered")
 
-st.title("⚽ EdibleFC Randomiser ⚽")
+st.title("🍽️⚽ EdibleFC Randomiser")
 st.write("Generate fair football teams with balanced positions (GK, DEF, MID, ST).")
 
 # Persistent storage
@@ -19,8 +19,36 @@ if "teams" not in st.session_state:
 if "edit_index" not in st.session_state:
     st.session_state["edit_index"] = None  # track which player is being edited
 
+# --- Player Database Upload ---
+st.sidebar.header("📂 Player Database")
 
-# Sidebar form for adding players
+uploaded_file = st.sidebar.file_uploader("Upload Excel file with players", type=["xlsx"])
+
+if uploaded_file:
+    try:
+        df_db = pd.read_excel(uploaded_file)
+
+        if "Name" in df_db.columns and "Position" in df_db.columns:
+            st.sidebar.success("✅ Player database loaded!")
+
+            # Multi-select to pick players from the database
+            selected_names = st.sidebar.multiselect(
+                "Select Players",
+                options=df_db["Name"].tolist()
+            )
+
+            if st.sidebar.button("🕹️ Add Selected Players"):
+                for name in selected_names:
+                    pos = df_db.loc[df_db["Name"] == name, "Position"].values[0]
+                    st.session_state["players"].append((name, pos))
+                st.success(f"Added {len(selected_names)} players from database")
+        else:
+            st.sidebar.error("Excel must have 'Name' and 'Position' columns")
+
+    except Exception as e:
+        st.sidebar.error(f"Error reading Excel file: {e}")
+
+# --- Sidebar form for manually adding players ---
 st.sidebar.header("➕ Add Players")
 with st.sidebar.form("add_player_form"):
     name = st.text_input("Player Name")
@@ -30,7 +58,6 @@ with st.sidebar.form("add_player_form"):
     if add_btn and name:
         st.session_state["players"].append((name, position))
         st.success(f"✅ Added {name} as {position}")
-
 
 # --- Manage Players ---
 st.subheader("📋 Player List")
@@ -78,7 +105,6 @@ else:
                     st.success(f"🗑️ Removed {removed[0]} ({removed[1]})")
                     st.rerun()
 
-
 # --- Team generator function ---
 def generate_teams(players, num_teams):
     teams = defaultdict(list)
@@ -121,14 +147,12 @@ def generate_teams(players, num_teams):
 
     return teams
 
-
 # --- Generate Teams ---
 if st.session_state["players"]:
     num_teams = st.slider("Number of Teams", min_value=2, max_value=6, value=2, step=1)
 
     if st.button("🎲 Generate Teams"):
         st.session_state["teams"] = generate_teams(st.session_state["players"], num_teams)
-
 
 # --- Show results ---
 if st.session_state["teams"]:
@@ -217,7 +241,6 @@ if st.session_state["teams"]:
         file_name="EdibleFC_Teams.pdf",
         mime="application/pdf"
     )
-
 
 # --- Reset all players ---
 if st.button("♻️ Reset Players"):
