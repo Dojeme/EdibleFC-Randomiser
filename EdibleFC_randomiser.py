@@ -9,7 +9,7 @@ import os
 
 st.set_page_config(page_title="EdibleFC Randomiser", page_icon="⚽", layout="centered")
 
-st.title("⚽EdibleFC Randomiser⚽")
+st.title("🍽️⚽ EdibleFC Randomiser")
 st.write("Generate fair football teams with balanced positions (GK, DEF, MID, ST).")
 
 # --- Persistent storage ---
@@ -27,7 +27,7 @@ if os.path.exists("players.xlsx"):
     try:
         df_db = pd.read_excel("players.xlsx")
         if "Name" in df_db.columns and "Position" in df_db.columns:
-            st.sidebar.success("✅ Player database loaded!")
+            st.sidebar.success("✅ Player database loaded from repo!")
 
             # Multi-select to pick players from database
             selected_names = st.sidebar.multiselect(
@@ -64,6 +64,9 @@ st.subheader("📋 Player List")
 if not st.session_state["players"]:
     st.info("No players added yet.")
 else:
+    # ✅ Show player count
+    st.markdown(f"**Total Players: {len(st.session_state['players'])}**")
+
     if st.button("🔀 Shuffle Players"):
         random.shuffle(st.session_state["players"])
         st.success("🔀 Player list shuffled!")
@@ -103,8 +106,10 @@ else:
 
 # --- Team generator function ---
 def generate_teams(players, num_teams):
+    players = players[:]  # copy so we don’t mutate the session list
+    random.shuffle(players)  # ✅ always shuffle fresh on every generate
+
     teams = defaultdict(list)
-    random.shuffle(players)
     positions = {"GK": [], "DEF": [], "MID": [], "ST": []}
     for name, pos in players:
         positions[pos].append((name, pos))
