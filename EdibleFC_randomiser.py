@@ -12,7 +12,7 @@ st.set_page_config(page_title="EdibleFC Randomiser", page_icon="⚽", layout="ce
 st.title("⚽EdibleFC Randomiser⚽")
 st.write("Generate fair football teams with balanced positions (GK, DEF, MID, ST).")
 
-# Persistent storage
+# --- Persistent storage ---
 if "players" not in st.session_state:
     st.session_state["players"] = []
 if "teams" not in st.session_state:
@@ -27,7 +27,7 @@ if os.path.exists("players.xlsx"):
     try:
         df_db = pd.read_excel("players.xlsx")
         if "Name" in df_db.columns and "Position" in df_db.columns:
-            st.sidebar.success("✅ Player database loaded!")
+            st.sidebar.success("✅ Player database loaded from repo!")
 
             # Multi-select to pick players from database
             selected_names = st.sidebar.multiselect(
@@ -204,7 +204,7 @@ if st.session_state["teams"]:
         mime="application/pdf"
     )
 
-# --- Reset all players ---
+# --- Reset all players (only clears when button clicked) ---
 if st.button("♻️ Reset Players"):
     st.session_state["players"] = []
     st.session_state["teams"] = {}
