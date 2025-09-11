@@ -205,4 +205,8 @@ if st.session_state["teams"]:
     )
 
 # --- Reset all players ---
-if st.button("♻️
+if st.button("♻️ Reset Players"):
+    st.session_state["players"] = []
+    st.session_state["teams"] = {}
+    st.session_state["edit_index"] = None
+    st.success("Player list cleared.")
