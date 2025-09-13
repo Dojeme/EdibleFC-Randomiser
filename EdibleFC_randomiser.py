@@ -9,7 +9,7 @@ import os
 
 st.set_page_config(page_title="EdibleFC Randomiser", page_icon="⚽", layout="centered")
 
-st.title("⚽EdibleFC Randomiser⚽")
+st.title("⚽Taiwo and May ⚽")
 st.write("Generate fair football teams with balanced positions (GK, DEF, MID, ST).")
 
 # --- Persistent storage ---
